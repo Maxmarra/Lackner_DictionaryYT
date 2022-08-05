@@ -28,6 +28,7 @@ class WordInfoRepositoryImpl(
         //делаем API запрос и вставляем данные в базу
         try {
 
+
             val remoteWordInfos = api.getWordInfo(word)
 
             dao.deleteWordInfos(remoteWordInfos.map { it.word })
