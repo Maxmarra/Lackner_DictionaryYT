@@ -10,6 +10,9 @@ import com.plcoding.dictionary.feature_dictionary.data.local.entity.WordInfoEnti
     version = 1
 )
 @TypeConverters(Converters::class)
+//TypeConverters из-за наличия val meanings: List<Meaning>,
+//так как это список его нельзя вставить в одно поле таблицы,
+// его еще приходится распарсить
 abstract class WordInfoDatabase: RoomDatabase() {
 
     abstract val dao: WordInfoDao

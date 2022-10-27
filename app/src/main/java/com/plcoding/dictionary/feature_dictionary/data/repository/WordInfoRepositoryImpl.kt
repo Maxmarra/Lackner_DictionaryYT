@@ -2,6 +2,7 @@ package com.plcoding.dictionary.feature_dictionary.data.repository
 
 import com.plcoding.dictionary.core.util.Resource
 import com.plcoding.dictionary.feature_dictionary.data.local.WordInfoDao
+import com.plcoding.dictionary.feature_dictionary.data.local.WordInfoDatabase
 import com.plcoding.dictionary.feature_dictionary.data.remote.DictionaryApi
 import com.plcoding.dictionary.feature_dictionary.domain.model.WordInfo
 import com.plcoding.dictionary.feature_dictionary.domain.repository.WordInfoRepository
@@ -15,19 +16,20 @@ class WordInfoRepositoryImpl(
     private val dao: WordInfoDao
 ): WordInfoRepository {
 
-    override fun getWordInfo(word: String): Flow<Resource<List<WordInfo>>>
-    = flow {
+
+    override fun getWordInfo(word: String)
+    : Flow<Resource<List<WordInfo>>> = flow {
 
         emit(Resource.Loading())
 
         // получаем данные из кэша если они уже там есть
         // и приводим их к классу-моделе
         val wordInfos = dao.getWordInfos(word).map { it.toWordInfo() }
+
         emit(Resource.Loading(data = wordInfos))
 
         //делаем API запрос и вставляем данные в базу
         try {
-
 
             val remoteWordInfos = api.getWordInfo(word)
 
